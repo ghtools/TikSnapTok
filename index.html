@@ -90,37 +90,46 @@
   }
 
   .input-wrap{
-    position:relative;
-    margin-bottom:12px;
-  }
-  input[type=text]{
-    width:100%;
-    padding:16px 52px 16px 16px;
-    border-radius:12px;
-    border:1.5px solid var(--line);
-    font-size:15px;
+    display:flex;
+    align-items:center;
     background:#fff;
-    color:var(--ink);
-    outline:none;
+    border-radius:14px;
+    border:1.5px solid var(--line);
+    padding:6px 6px 6px 16px;
+    margin-bottom:12px;
     transition:border-color .15s ease;
   }
-  input[type=text]:focus{
+  .input-wrap:focus-within{
     border-color:var(--accent1);
   }
-  .paste-btn{
-    position:absolute;
-    right:8px;
-    top:50%;
-    transform:translateY(-50%);
-    background:transparent;
+  input[type=text]{
+    flex:1;
+    min-width:0;
     border:none;
-    padding:8px;
-    cursor:pointer;
-    color:var(--muted);
-    font-size:18px;
-    line-height:1;
+    outline:none;
+    background:transparent;
+    padding:12px 8px;
+    font-size:15px;
+    color:var(--ink);
   }
-  .paste-btn:hover{ color:var(--accent1); }
+  .paste-btn{
+    flex-shrink:0;
+    width:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:11px 16px;
+    cursor:pointer;
+    font-size:13.5px;
+    font-weight:700;
+    white-space:nowrap;
+    box-shadow:none;
+  }
+  .paste-btn:hover{ background:#28282e; }
 
   button{
     width:100%;
@@ -260,8 +269,8 @@
 
     <div class="panel">
       <div class="input-wrap">
-        <input type="text" id="tkUrl" placeholder="Paste TikTok link here" autocomplete="off" spellcheck="false">
-        <button class="paste-btn" id="pasteBtn" title="Paste from clipboard" type="button">📋</button>
+        <input type="text" id="tkUrl" placeholder="Insert a TikTok link here" autocomplete="off" spellcheck="false">
+        <button class="paste-btn" id="pasteBtn" title="Paste from clipboard" type="button">📋 Paste</button>
       </div>
       <button id="goBtn">Download Video</button>
       <div class="hint">Works with links shared from the TikTok app, including short vm.tiktok.com links.</div>
@@ -281,7 +290,7 @@
         <video id="preview" controls playsinline></video>
         <div class="meta" id="meta"></div>
         <div class="dl-row">
-          <a class="dl-btn dl-primary" id="dlVideo" href="#" download target="_blank" rel="noopener">Download video</a>
+          <a class="dl-btn dl-primary" id="dlVideo" href="#" download target="_blank" rel="noopener">Download video — <span id="qualityLabel">HD</span></a>
           <a class="dl-btn dl-secondary" id="dlAudio" href="#" download target="_blank" rel="noopener" style="display:none;">Download audio only</a>
         </div>
       </div>
@@ -347,10 +356,25 @@
       const data = await res.json();
       const info = data.data || data;
 
-      const playUrl = info.play || info.hdplay || info.wmplay;
+      // Prefer the highest quality no-watermark link available.
+      const hdUrl = info.hdplay;
+      const sdUrl = info.play;
+      const wmUrl = info.wmplay;
       const musicUrl = info.music;
       const title = info.title || 'TikTok video';
       const author = (info.author && (info.author.nickname || info.author.unique_id)) || '';
+
+      let playUrl, qualityText;
+      if (hdUrl) {
+        playUrl = hdUrl;
+        qualityText = 'HD';
+      } else if (sdUrl) {
+        playUrl = sdUrl;
+        qualityText = 'SD';
+      } else if (wmUrl) {
+        playUrl = wmUrl;
+        qualityText = 'Standard (watermark)';
+      }
 
       if(!playUrl){
         throw new Error('No downloadable link found in response');
@@ -359,9 +383,11 @@
       preview.src = playUrl;
       metaEl.innerHTML = `<b>${title}</b>${author ? ' — @' + author : ''}`;
       dlVideo.href = playUrl;
+      document.getElementById('qualityLabel').textContent = qualityText;
 
       if(musicUrl){
         dlAudio.href = musicUrl;
+        dlAudio.textContent = 'Download audio only — MP3';
         dlAudio.style.display = 'block';
       } else {
         dlAudio.style.display = 'none';

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikSnapTok — TikTok Video Downloader, No Watermark</title>
+<style>
+  :root{
+    --ink:#0d0d10;
+    --paper:#f7f4ee;
+    --line: rgba(13,13,16,0.12);
+    --accent1:#ff2d55;
+    --accent2:#00e0d3;
+    --muted:#6b6b70;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:32px 18px 60px;
+  }
+
+  .brandbar{
+    width:100%;
+    max-width:640px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:40px;
+  }
+  .brand{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .brand span{
+    background:linear-gradient(120deg, var(--accent1), var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .tag{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color:var(--muted);
+  }
+
+  main{
+    width:100%;
+    max-width:640px;
+  }
+
+  h1{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight:700;
+    font-size:clamp(30px, 7vw, 44px);
+    line-height:1.12;
+    letter-spacing:-0.02em;
+    margin:0 0 14px;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg, var(--accent1), var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  p.lede{
+    color:#c7c7cc;
+    font-size:16px;
+    line-height:1.5;
+    max-width:50ch;
+    margin:0 0 32px;
+  }
+
+  .panel{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:18px;
+    padding:22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+
+  .input-wrap{
+    position:relative;
+    margin-bottom:12px;
+  }
+  input[type=text]{
+    width:100%;
+    padding:16px 52px 16px 16px;
+    border-radius:12px;
+    border:1.5px solid var(--line);
+    font-size:15px;
+    background:#fff;
+    color:var(--ink);
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  input[type=text]:focus{
+    border-color:var(--accent1);
+  }
+  .paste-btn{
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    background:transparent;
+    border:none;
+    padding:8px;
+    cursor:pointer;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1;
+  }
+  .paste-btn:hover{ color:var(--accent1); }
+
+  button{
+    width:100%;
+    padding:20px 22px;
+    border-radius:14px;
+    border:none;
+    background:linear-gradient(120deg, #00e0a4, #00c2ff);
+    color:#0d0d10;
+    font-weight:800;
+    font-size:19px;
+    letter-spacing:-0.01em;
+    cursor:pointer;
+    box-shadow: 0 10px 30px rgba(0,194,255,0.35);
+    transition: transform .12s ease, filter .15s ease, box-shadow .15s ease;
+  }
+  button:hover{ filter:brightness(1.06); box-shadow: 0 14px 36px rgba(0,194,255,0.45); }
+  button:active{ transform:scale(0.98); }
+  button:disabled{ opacity:0.5; cursor:progress; box-shadow:none; }
+
+  .howto{
+    margin-top:16px;
+    border:1.5px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .howto summary{
+    padding:14px 16px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    list-style:none;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .howto summary::-webkit-details-marker{ display:none; }
+  .howto summary::after{
+    content:"+";
+    font-size:18px;
+    color:var(--muted);
+  }
+  .howto[open] summary::after{ content:"–"; }
+  .howto ol{
+    margin:0;
+    padding:0 18px 16px 34px;
+    font-size:13.5px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+
+  .hint{
+    margin-top:12px;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+
+  .status{
+    margin-top:18px;
+    font-size:14px;
+    display:none;
+  }
+  .status.show{ display:block; }
+  .status.error{ color:#c0203c; }
+  .status.loading{ color:var(--muted); }
+
+  .result{
+    margin-top:22px;
+    display:none;
+    border-top:1px solid var(--line);
+    padding-top:20px;
+  }
+  .result.show{ display:block; }
+  .result video{
+    width:100%;
+    border-radius:12px;
+    background:#000;
+    max-height:480px;
+  }
+  .meta{
+    margin:14px 0 18px;
+    font-size:14px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  .meta b{ color:var(--ink); }
+
+  .dl-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  a.dl-btn{
+    flex:1 1 160px;
+    text-align:center;
+    padding:14px 16px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    font-size:14px;
+  }
+  a.dl-primary{
+    background:linear-gradient(120deg, var(--accent1), var(--accent2));
+    color:#0d0d10;
+  }
+  a.dl-secondary{
+    background:transparent;
+    border:1.5px solid var(--line);
+    color:var(--ink);
+  }
+
+  footer{
+    max-width:640px;
+    width:100%;
+    margin-top:48px;
+    font-size:12px;
+    color:#5a5a60;
+    line-height:1.6;
+    border-top:1px solid rgba(255,255,255,0.08);
+    padding-top:20px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    button, a.dl-btn{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="brandbar">
+    <div class="brand">Tik<span>Snap</span>Tok</div>
+    <div class="tag">no watermark · free</div>
+  </div>
+
+  <main>
+    <h1>TikTok Video <em>Downloader</em></h1>
+    <p class="lede">Paste any TikTok link and save the video in HD — no watermark, no logo, no sign-up.</p>
+
+    <div class="panel">
+      <div class="input-wrap">
+        <input type="text" id="tkUrl" placeholder="Paste TikTok link here" autocomplete="off" spellcheck="false">
+        <button class="paste-btn" id="pasteBtn" title="Paste from clipboard" type="button">📋</button>
+      </div>
+      <button id="goBtn">Download Video</button>
+      <div class="hint">Works with links shared from the TikTok app, including short vm.tiktok.com links.</div>
+
+      <details class="howto">
+        <summary>How to save a TikTok video without watermark</summary>
+        <ol>
+          <li>Open TikTok, find the video, tap Share → Copy link.</li>
+          <li>Come back here and tap the clipboard icon to paste it.</li>
+          <li>Tap "Get video," then tap "Download video" once the preview loads.</li>
+        </ol>
+      </details>
+
+      <div class="status" id="status"></div>
+
+      <div class="result" id="result">
+        <video id="preview" controls playsinline></video>
+        <div class="meta" id="meta"></div>
+        <div class="dl-row">
+          <a class="dl-btn dl-primary" id="dlVideo" href="#" download target="_blank" rel="noopener">Download video</a>
+          <a class="dl-btn dl-secondary" id="dlAudio" href="#" download target="_blank" rel="noopener" style="display:none;">Download audio only</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    TikSnapTok is an independent tool and is not affiliated with, endorsed by, or sponsored by TikTok. Please only download content you have the right to use, and respect the original creator's rights.
+    <div style="margin-top:14px; opacity:0.7;">Made with ❤️ by GH Jamali</div>
+  </footer>
+
+<script>
+  // ⚠️ Replace with your own RapidAPI key. For a production site, this call
+  // should go through a small server-side proxy so the key isn't exposed in
+  // the page source — see the note left for GH in the build instructions.
+  const RAPIDAPI_KEY = "271409d9cfmsh6ec8615ea19012dp159cafjsneaa42092cb93";
+  const RAPIDAPI_HOST = "tiktok-video-no-watermark2.p.rapidapi.com";
+
+  const urlInput = document.getElementById('tkUrl');
+  const goBtn = document.getElementById('goBtn');
+  const pasteBtn = document.getElementById('pasteBtn');
+  const statusEl = document.getElementById('status');
+  const resultEl = document.getElementById('result');
+  const preview = document.getElementById('preview');
+  const metaEl = document.getElementById('meta');
+  const dlVideo = document.getElementById('dlVideo');
+  const dlAudio = document.getElementById('dlAudio');
+
+  function setStatus(msg, kind){
+    statusEl.textContent = msg;
+    statusEl.className = 'status show' + (kind ? ' ' + kind : '');
+  }
+  function clearStatus(){
+    statusEl.className = 'status';
+    statusEl.textContent = '';
+  }
+
+  async function fetchVideo(){
+    const link = urlInput.value.trim();
+    if(!link){
+      setStatus('Paste a TikTok link first.', 'error');
+      return;
+    }
+
+    goBtn.disabled = true;
+    resultEl.classList.remove('show');
+    setStatus('Fetching your video…', 'loading');
+
+    try{
+      const apiUrl = `https://${RAPIDAPI_HOST}/?url=${encodeURIComponent(link)}&hd=1`;
+      const res = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'x-rapidapi-key': RAPIDAPI_KEY,
+          'x-rapidapi-host': RAPIDAPI_HOST
+        }
+      });
+
+      if(!res.ok){
+        throw new Error('API returned ' + res.status);
+      }
+
+      const data = await res.json();
+      const info = data.data || data;
+
+      const playUrl = info.play || info.hdplay || info.wmplay;
+      const musicUrl = info.music;
+      const title = info.title || 'TikTok video';
+      const author = (info.author && (info.author.nickname || info.author.unique_id)) || '';
+
+      if(!playUrl){
+        throw new Error('No downloadable link found in response');
+      }
+
+      preview.src = playUrl;
+      metaEl.innerHTML = `<b>${title}</b>${author ? ' — @' + author : ''}`;
+      dlVideo.href = playUrl;
+
+      if(musicUrl){
+        dlAudio.href = musicUrl;
+        dlAudio.style.display = 'block';
+      } else {
+        dlAudio.style.display = 'none';
+      }
+
+      resultEl.classList.add('show');
+      clearStatus();
+    }catch(err){
+      console.error(err);
+      setStatus('Could not fetch that video. Double-check the link and try again.', 'error');
+    }finally{
+      goBtn.disabled = false;
+    }
+  }
+
+  pasteBtn.addEventListener('click', async () => {
+    try{
+      const text = await navigator.clipboard.readText();
+      if(text){
+        urlInput.value = text.trim();
+        urlInput.focus();
+      }
+    }catch(err){
+      urlInput.focus();
+      setStatus('Tap the box and paste manually — clipboard access was blocked.', 'error');
+    }
+  });
+
+  goBtn.addEventListener('click', fetchVideo);
+  urlInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') fetchVideo();
+  });
+</script>
+
+</body>
+</html>

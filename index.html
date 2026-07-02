@@ -303,11 +303,8 @@
   </footer>
 
 <script>
-  // ⚠️ Replace with your own RapidAPI key. For a production site, this call
-  // should go through a small server-side proxy so the key isn't exposed in
-  // the page source — see the note left for GH in the build instructions.
-  const RAPIDAPI_KEY = "271409d9cfmsh6ec8615ea19012dp159cafjsneaa42092cb93";
-  const RAPIDAPI_HOST = "tiktok-video-no-watermark2.p.rapidapi.com";
+  // Video data is fetched through our own /api/download serverless function,
+  // which keeps the RapidAPI key safely on the server side.
 
   const urlInput = document.getElementById('tkUrl');
   const goBtn = document.getElementById('goBtn');
@@ -340,14 +337,8 @@
     setStatus('Fetching your video…', 'loading');
 
     try{
-      const apiUrl = `https://${RAPIDAPI_HOST}/?url=${encodeURIComponent(link)}&hd=1`;
-      const res = await fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-          'x-rapidapi-key': RAPIDAPI_KEY,
-          'x-rapidapi-host': RAPIDAPI_HOST
-        }
-      });
+      const apiUrl = `/api/download?url=${encodeURIComponent(link)}`;
+      const res = await fetch(apiUrl);
 
       if(!res.ok){
         throw new Error('API returned ' + res.status);

@@ -38,6 +38,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://www.highperformanceformat.com">
+<link rel="dns-prefetch" href="https://pl30170543.effectivecpmnetwork.com">
+<link rel="manifest" href="/manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <!-- Structured data -->
@@ -126,6 +129,76 @@
           "@type": "Question",
           "name": "Are my downloads private?",
           "acceptedAnswer": { "@type": "Answer", "text": "Yes. Your activity is never shown publicly and we don't keep a record of what you've downloaded." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I download TikTok videos without a watermark?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Copy the video link from TikTok's Share menu, paste it into the box on this page, and tap Download Video. TikSnapTok returns the original file without the TikTok logo overlay." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I save TikTok videos in HD quality?",
+          "acceptedAnswer": { "@type": "Answer", "text": "TikSnapTok automatically selects the highest resolution version of a video when TikTok makes one available, so no extra setting is needed to get an HD download." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I download TikTok videos on Android?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Open this page in any Android browser such as Chrome, paste the link, and the video saves to your device's Downloads folder." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I download TikTok videos on PC or Mac?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. TikSnapTok works the same way on Windows and Mac desktop browsers as it does on mobile, paste the link and download directly." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I download a TikTok slideshow or photo post?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. For TikTok photo-mode posts, TikSnapTok lets you save each image individually along with the background music as a separate MP3 file." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I download the audio from a TikTok video?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. When a video has a downloadable audio track, TikSnapTok shows a 'Download audio only' option that saves the sound as an MP3." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does TikSnapTok convert TikTok videos to MP4?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Downloaded TikTok videos are saved in standard MP4 format, which plays on virtually every phone, tablet and computer." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to install an app to use TikSnapTok?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. TikSnapTok works entirely in your web browser as an online TikTok downloader, there is nothing to install on Android, iPhone, PC or Mac." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why did my TikTok link fail to download?",
+          "acceptedAnswer": { "@type": "Answer", "text": "This usually means the video is private, was deleted, or the copied link was incomplete. Try copying the link again from TikTok's Share button and pasting it fresh." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the Paste button work on every browser?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Most modern browsers support it, but some block clipboard access by default for privacy. If Paste doesn't work, tap the input box and paste the link manually." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a limit to how many videos I can download?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. TikSnapTok does not enforce a daily download limit or require payment to keep using it." }
+        },
+        {
+          "@type": "Question",
+          "name": "Will the downloaded video have the TikTok logo on it?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. TikSnapTok is built specifically as a TikTok downloader without watermark, so the saved file does not include the TikTok logo overlay." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use TikSnapTok on a tablet?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The site is fully responsive and works the same way on tablets as it does on phones and desktop computers." }
+        },
+        {
+          "@type": "Question",
+          "name": "Who can I contact about a copyright concern?",
+          "acceptedAnswer": { "@type": "Answer", "text": "See the DMCA notice in the footer for how to report content you believe infringes your copyright, including the video URL and a description of your claim." }
         }
       ]
     }
@@ -173,6 +246,21 @@
     white-space:nowrap;
     border:0;
   }
+
+  .skip-link{
+    position:absolute;
+    top:-60px;
+    left:12px;
+    z-index:100;
+    background:var(--cyan);
+    color:#07070a;
+    font-weight:700;
+    padding:10px 16px;
+    border-radius:10px;
+    text-decoration:none;
+    transition:top .2s ease;
+  }
+  .skip-link:focus{ top:12px; }
 
   .breadcrumb{
     max-width:1100px;
@@ -442,7 +530,27 @@
     font-weight:400;
     line-height:1.65;
     max-width:44ch;
-    margin:0 auto 36px;
+    margin:0 auto 24px;
+  }
+
+  .hero-pills{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:7px;
+    list-style:none;
+    margin:0 auto 30px;
+    padding:0;
+    max-width:520px;
+  }
+  .hero-pills li{
+    font-size:11.5px;
+    font-weight:600;
+    color:#c4c4cb;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--panel-line);
+    border-radius:999px;
+    padding:6px 12px;
   }
 
   .panel{ max-width:600px; margin:0 auto; }
@@ -645,6 +753,19 @@
   .status.show{ display:block; }
   .status.error{ color:#ff6b81; }
   .status.loading{ color:var(--muted); }
+  .status.loading::before{
+    content:"";
+    display:inline-block;
+    width:12px; height:12px;
+    margin-right:6px;
+    border:2px solid rgba(0,229,255,0.3);
+    border-top-color:var(--cyan);
+    border-radius:50%;
+    vertical-align:middle;
+    animation:spin .7s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .status.success{ color:#22c594; font-weight:600; }
 
   .result{
     margin-top:26px;
@@ -732,6 +853,12 @@
     color:var(--paper);
     margin:0 0 16px;
     text-align:center;
+  }
+  .intro-content h3{
+    font-size:16px;
+    font-weight:700;
+    color:var(--paper);
+    margin:26px 0 8px;
   }
   .intro-content p{ margin:0 0 14px; }
   .intro-content strong{ color:var(--paper); font-weight:600; }
@@ -931,6 +1058,12 @@
     line-height:1.6;
   }
 
+  .legal-section{
+    max-width:820px;
+    margin:56px auto 0;
+    padding:0 20px;
+  }
+
   footer{
     max-width:1100px;
     margin:90px auto 0;
@@ -957,6 +1090,7 @@
     font-weight:500;
   }
   .footer-links a:hover{ color:var(--cyan); }
+  .footer-links-soon{ color:#5a5a63; }
   .footer-links .dot{ color:#3f3f47; }
   footer p{ max-width:60ch; margin:0 auto; }
   footer .credit{
@@ -977,6 +1111,7 @@
 </style>
 </head>
 <body>
+  <a href="#downloader" class="skip-link">Skip to downloader</a>
 
   <nav>
     <a href="/" class="brand">
@@ -1031,6 +1166,18 @@
 
       <p class="lede">Save any TikTok video in HD. No watermark, no signup.</p>
 
+      <ul class="hero-pills" aria-label="Key benefits">
+        <li>Free Forever</li>
+        <li>No Watermark</li>
+        <li>HD Quality</li>
+        <li>Fast Download</li>
+        <li>Works on Android</li>
+        <li>Works on iPhone</li>
+        <li>Works on PC</li>
+        <li>No Signup</li>
+        <li>Privacy First</li>
+      </ul>
+
       <div class="ad-slot">
         <div class="ad-label">Advertisement</div>
         <div class="ad-slot-inner ad-h50">
@@ -1047,7 +1194,7 @@
         </div>
       </div>
 
-      <div class="panel">
+      <div class="panel" id="downloader">
         <div class="input-wrap">
           <span class="link-icon">🔗</span>
           <input type="text" id="tkUrl" placeholder="Paste TikTok link here" aria-label="TikTok video link" autocomplete="off" spellcheck="false">
@@ -1081,12 +1228,12 @@
         </div>
 
         <div class="stats-row">
-          <div class="stats-label">⭐ Trusted by Millions</div>
+          <div class="stats-label">Why people trust TikSnapTok</div>
           <div class="stats-grid">
-            <div class="stat"><div class="stat-num">2.5M+</div><div class="stat-label">Downloads</div></div>
-            <div class="stat"><div class="stat-num">99.9%</div><div class="stat-label">Uptime</div></div>
-            <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free</div></div>
-            <div class="stat"><div class="stat-num">Global</div><div class="stat-label">Access</div></div>
+            <div class="stat"><div class="stat-num">🔐</div><div class="stat-label">Privacy First</div></div>
+            <div class="stat"><div class="stat-num">⚡</div><div class="stat-label">Fast Download</div></div>
+            <div class="stat"><div class="stat-num">💯</div><div class="stat-label">Free Forever</div></div>
+            <div class="stat"><div class="stat-num">🌍</div><div class="stat-label">Works Worldwide</div></div>
           </div>
         </div>
 
@@ -1099,7 +1246,7 @@
           </ol>
         </details>
 
-        <div class="status" id="status"></div>
+        <div class="status" id="status" role="status" aria-live="polite"></div>
 
         <div class="result" id="result">
           <video id="preview" controls playsinline aria-label="Downloaded TikTok video preview"></video>
@@ -1115,14 +1262,36 @@
 
     <section class="intro-content" aria-labelledby="intro-heading">
       <h2 id="intro-heading">The Free TikTok Video Downloader Without Watermark</h2>
-      <p><strong>TikSnapTok</strong> is a free online <strong>TikTok video downloader</strong> that lets you save any public TikTok video directly to your phone or computer in HD, without the TikTok watermark. Whether you want to <strong>download TikTok videos</strong> for offline viewing, repost content you created, or archive a favorite clip, TikSnapTok makes the process quick and simple.</p>
-      <p><strong>How it works:</strong> open the TikTok app, tap Share on any video, and choose Copy Link. Paste that link into the box above and tap Download Video. TikSnapTok connects to TikTok's servers, finds the original HD file, and gives you a clean <strong>TikTok MP4 downloader</strong> link with no logo overlay. There's no browser extension, no desktop software and no waiting.</p>
-      <p><strong>Why users choose TikSnapTok:</strong> most tools online either add their own watermark, force you through surveys, or limit video quality. TikSnapTok is built to skip all of that. It's a genuinely <strong>free TikTok downloader</strong> with no daily limits, no forced signup, and no hidden fees. As a <strong>TikTok HD downloader</strong>, it automatically selects the highest resolution version of a video when one is available, so what you save looks exactly like what you saw in the app.</p>
-      <p><strong>Privacy and safety:</strong> TikSnapTok never asks for your TikTok username or password, and it doesn't require you to log in to any account to use it. Videos are fetched and streamed directly to your device, we don't keep a public history of what anyone has downloaded, and your activity is never shared or displayed. This makes TikSnapTok a safe <strong>TikTok video saver</strong> for everyday use.</p>
-      <p>TikSnapTok also works with TikTok photo slideshow posts, letting you save each image individually along with the background audio track as MP3. Combined with support for short <code>vm.tiktok.com</code> links, it functions as a complete <strong>TikTok video download online</strong> solution for both single videos and photo-mode posts, on any device, in any modern mobile or desktop browser. See the full list of <a href="#features">features</a>, review the <a href="#how">step-by-step guide</a>, or check the <a href="#faqs">frequently asked questions</a> below.</p>
+      <p><strong>TikSnapTok</strong> is a free online <strong>TikTok video downloader</strong> that lets you save any public TikTok video directly to your phone or computer in HD, without the TikTok watermark. Whether you want to <strong>download TikTok videos</strong> for offline viewing, repost content you created, or archive a favorite clip, TikSnapTok makes the process quick and simple. It works as a complete <strong>TikTok MP4 downloader</strong>, <strong>TikTok MP3 downloader</strong> and <strong>TikTok photo downloader</strong> in one place, with no app install required.</p>
+
+      <h3>How TikSnapTok Works</h3>
+      <p>Using TikSnapTok as your <strong>TikTok downloader online</strong> takes three steps. First, open the TikTok app or website, find the video you want, tap Share, and choose Copy Link. Second, come back to TikSnapTok and paste that link into the input box above, using the Paste button for convenience. Third, tap Download Video. TikSnapTok connects to TikTok's servers, locates the original HD file, and returns a clean, watermark-free link. There's no browser extension to install, no desktop software, and no account to create, it works entirely as a <strong>TikTok video downloader online</strong> tool inside your existing browser.</p>
+
+      <h3>Key Features</h3>
+      <p>As a <strong>TikTok HD downloader</strong>, TikSnapTok automatically selects the highest resolution version of a video when one is available, so the file you save looks exactly like what you saw in the app. It also functions as a <strong>TikTok slideshow downloader</strong>: for TikTok photo-mode posts, it lets you save each image individually, plus the background <strong>TikTok audio downloader</strong> track as a standalone MP3. Short links from the TikTok mobile app, including <code>vm.tiktok.com</code> addresses, are fully supported, so you rarely need to hunt for the "full" video URL first.</p>
+
+      <h3>Benefits of Using TikSnapTok</h3>
+      <p>Most tools online either stamp their own watermark over the video, force you through survey walls, or cap the video quality unless you pay. TikSnapTok skips all of that. It is a genuinely <strong>free TikTok downloader</strong> with no daily limits, no forced signup, and no hidden fees, making it one of the more straightforward options if you're comparing the <strong>best TikTok downloader</strong> tools available today. Because there's no account system, there is also nothing to manage, remember, or lose access to later.</p>
+
+      <h3>Supported Devices</h3>
+      <p>TikSnapTok is a <strong>TikTok downloader for Android</strong>, a <strong>TikTok downloader for iPhone</strong>, and a <strong>TikTok downloader for PC</strong> or <strong>TikTok downloader for Mac</strong>, all from the same responsive web page, there's no separate app for each platform. To <strong>download TikTok videos on Android</strong>, open this page in Chrome or your default browser, paste the link, and the video saves straight to your Downloads folder. To <strong>download TikTok videos on iPhone</strong>, use Safari or Chrome for iOS, tap Download Video, and save the file to Photos or Files when prompted. On a <strong>TikTok downloader for Windows</strong> or Mac desktop, the process is identical, paste the link and the browser handles the save dialog.</p>
+
+      <h3>Supported Browsers</h3>
+      <p>TikSnapTok is built with standard web technology and works in all modern browsers, including Chrome, Safari, Firefox, Edge and Samsung Internet, on both desktop and mobile. No plugins or browser extensions are required. If clipboard paste doesn't work automatically in your browser due to permission settings, you can always paste the link manually by long-pressing the input box.</p>
+
+      <h3>Privacy &amp; Security</h3>
+      <p>TikSnapTok never asks for your TikTok username or password, and never requires you to log in to any account to use it. Videos are fetched and streamed directly to your device through our servers, we don't keep a public history of what anyone has downloaded, and your activity is never shared or displayed anywhere on the site. This makes TikSnapTok a safe <strong>TikTok video saver</strong> for everyday use. See the full <a href="#privacy">Privacy Policy</a> for details on what limited technical data is handled and why.</p>
+
+      <h3>Troubleshooting</h3>
+      <p>If a link fails to load, the most common cause is that the video is private, has been deleted, or the copied link is incomplete, try copying the link again directly from the Share button inside the TikTok app. If the Paste button doesn't fill the box automatically, your browser may be blocking clipboard access for privacy reasons, in that case tap the input box and paste manually. TikTok photo-slideshow posts don't have a single MP4 file, since the format is a set of images with music, so for those posts TikSnapTok offers image and audio downloads instead of a single video file.</p>
+
+      <h3>Copyright Notice</h3>
+      <p>TikSnapTok does not host, store, or redistribute TikTok videos on its own servers, it provides a technical link to content already publicly hosted by TikTok. Please only use this <strong>TikTok video converter</strong> and downloader for content you created yourself or have explicit permission to save, and always respect the original creator's rights and TikTok's Terms of Service. See our full <a href="#dmca">DMCA notice</a> for how to report a copyright concern.</p>
+
+      <p>Explore the full list of <a href="#features">features</a> below, review the <a href="#how">step-by-step guide</a>, or jump to the <a href="#faqs">frequently asked questions</a> for quick answers about downloading TikTok videos without watermark, in HD, on any device.</p>
     </section>
 
-    <div class="features" id="features">
+    <section class="features" id="features" aria-label="Key features">
       <h2 class="visually-hidden">Why Choose TikSnapTok as Your TikTok Downloader</h2>
       <div class="feature-card">
         <div class="feature-icon" style="background:rgba(0,229,255,0.12); color:var(--cyan);">⚡</div>
@@ -1144,9 +1313,9 @@
         <h3>All Devices</h3>
         <p>Works on mobile, tablet and desktop</p>
       </div>
-    </div>
+    </section>
 
-    <div class="how-section" id="how">
+    <section class="how-section" id="how" aria-label="How it works">
       <div class="eyebrow">Simple Steps</div>
       <h2 class="how-title">How It Works</h2>
       <div class="steps-wrap">
@@ -1171,9 +1340,9 @@
           <p>Tap download and save the video in HD</p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="faq-section" id="faqs">
+    <section class="faq-section" id="faqs" aria-label="Frequently asked questions">
       <div class="eyebrow">Got Questions</div>
       <h2 class="how-title">Frequently Asked Questions</h2>
       <div class="faq-list">
@@ -1201,8 +1370,64 @@
           <summary>Are my downloads private?<span class="faq-icon">+</span></summary>
           <p>Yes. Your activity is never shown publicly and we don't keep a record of what you've downloaded.</p>
         </details>
+        <details class="faq-item">
+          <summary>How do I download TikTok videos without a watermark?<span class="faq-icon">+</span></summary>
+          <p>Copy the video link from TikTok's Share menu, paste it into the box on this page, and tap Download Video. TikSnapTok returns the original file without the TikTok logo overlay.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I save TikTok videos in HD quality?<span class="faq-icon">+</span></summary>
+          <p>TikSnapTok automatically selects the highest resolution version of a video when TikTok makes one available, so no extra setting is needed to get an HD download.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I download TikTok videos on Android?<span class="faq-icon">+</span></summary>
+          <p>Yes. Open this page in any Android browser such as Chrome, paste the link, and the video saves to your device's Downloads folder.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I download TikTok videos on PC or Mac?<span class="faq-icon">+</span></summary>
+          <p>Yes. TikSnapTok works the same way on Windows and Mac desktop browsers as it does on mobile, paste the link and download directly.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I download a TikTok slideshow or photo post?<span class="faq-icon">+</span></summary>
+          <p>Yes. For TikTok photo-mode posts, TikSnapTok lets you save each image individually along with the background music as a separate MP3 file.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I download the audio from a TikTok video?<span class="faq-icon">+</span></summary>
+          <p>Yes. When a video has a downloadable audio track, TikSnapTok shows a "Download audio only" option that saves the sound as an MP3.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does TikSnapTok convert TikTok videos to MP4?<span class="faq-icon">+</span></summary>
+          <p>Yes. Downloaded TikTok videos are saved in standard MP4 format, which plays on virtually every phone, tablet and computer.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need to install an app to use TikSnapTok?<span class="faq-icon">+</span></summary>
+          <p>No. TikSnapTok works entirely in your web browser as an online TikTok downloader, there is nothing to install on Android, iPhone, PC or Mac.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Why did my TikTok link fail to download?<span class="faq-icon">+</span></summary>
+          <p>This usually means the video is private, was deleted, or the copied link was incomplete. Try copying the link again from TikTok's Share button and pasting it fresh.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does the Paste button work on every browser?<span class="faq-icon">+</span></summary>
+          <p>Most modern browsers support it, but some block clipboard access by default for privacy. If Paste doesn't work, tap the input box and paste the link manually.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a limit to how many videos I can download?<span class="faq-icon">+</span></summary>
+          <p>No. TikSnapTok does not enforce a daily download limit or require payment to keep using it.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Will the downloaded video have the TikTok logo on it?<span class="faq-icon">+</span></summary>
+          <p>No. TikSnapTok is built specifically as a TikTok downloader without watermark, so the saved file does not include the TikTok logo overlay.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use TikSnapTok on a tablet?<span class="faq-icon">+</span></summary>
+          <p>Yes. The site is fully responsive and works the same way on tablets as it does on phones and desktop computers.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Who can I contact about a copyright concern?<span class="faq-icon">+</span></summary>
+          <p>See the DMCA notice in the footer for how to report content you believe infringes your copyright, including the video URL and a description of your claim.</p>
+        </details>
       </div>
-    </div>
+    </section>
 
     <div class="ad-slot" style="max-width:1100px; margin:56px auto 0; padding:0 20px;">
       <div class="ad-label">Advertisement</div>
@@ -1211,15 +1436,48 @@
         <div id="container-8dbacfe4cac954871eb87ec229fc4bdd"></div>
       </div>
     </div>
+
+    <section class="legal-section" id="legal" aria-label="Legal information">
+      <div class="faq-list">
+        <details class="faq-item" id="about">
+          <summary>About TikSnapTok<span class="faq-icon">+</span></summary>
+          <p>TikSnapTok is an independent, free TikTok video downloader built to help people save public TikTok videos, photo slideshows and audio without a watermark. It is not affiliated with, endorsed by, or sponsored by TikTok or ByteDance. TikSnapTok is built and maintained by GH Jamali.</p>
+        </details>
+        <details class="faq-item" id="privacy">
+          <summary>Privacy Policy<span class="faq-icon">+</span></summary>
+          <p>TikSnapTok does not require an account, and we never ask for your TikTok username or password. The TikTok link you paste is sent to our server only to look up the video, and downloaded files are streamed directly to your device. We do not maintain a public or private log of what any visitor has downloaded, and we do not sell personal data. Standard, non-identifying technical logs (such as error logs) may be kept briefly to keep the service running reliably. Third-party advertising partners on this site may use cookies to serve ads; you can control this through your browser's cookie and privacy settings.</p>
+        </details>
+        <details class="faq-item" id="terms">
+          <summary>Terms of Use<span class="faq-icon">+</span></summary>
+          <p>By using TikSnapTok you agree to use it only for content you own, created, or have explicit permission to download. You are responsible for how you use downloaded content, including complying with TikTok's own Terms of Service and applicable copyright law. TikSnapTok is provided "as is" without warranty of any kind, and availability may vary if TikTok changes its platform. We may update these terms as the service evolves.</p>
+        </details>
+        <details class="faq-item" id="dmca">
+          <summary>DMCA / Copyright Notice<span class="faq-icon">+</span></summary>
+          <p>TikSnapTok does not host, store, or distribute any TikTok videos on its own servers, it simply provides a technical link to the original file already hosted publicly by TikTok. If you are a rights holder and believe content accessible through TikSnapTok infringes your copyright, please contact us with the specific video URL and a description of the claim, and we will review it promptly.</p>
+        </details>
+        <details class="faq-item" id="disclaimer">
+          <summary>Disclaimer<span class="faq-icon">+</span></summary>
+          <p>TikSnapTok is an independent tool and is not affiliated with, endorsed by, or sponsored by TikTok. Please only download content you have the right to use, and always respect the original creator's rights and TikTok's Terms of Service.</p>
+        </details>
+      </div>
+    </section>
   </main>
 
-  <footer id="faq">
+  <footer id="site-footer">
     <div class="footer-links">
+      <a href="#about">About</a>
+      <span class="dot">•</span>
+      <a href="#faqs">FAQ</a>
+      <span class="dot">•</span>
       <a href="#privacy">Privacy Policy</a>
       <span class="dot">•</span>
       <a href="#terms">Terms</a>
       <span class="dot">•</span>
-      <a href="mailto:hello@tiksnaptok.app">Contact</a>
+      <a href="#dmca">DMCA</a>
+      <span class="dot">•</span>
+      <a href="#disclaimer">Disclaimer</a>
+      <span class="dot">•</span>
+      <span class="footer-links-soon" title="Contact email coming soon">Contact</span>
     </div>
     <p>TikSnapTok is an independent tool and is not affiliated with, endorsed by, or sponsored by TikTok. Please only download content you have the right to use, and respect the original creator's rights.</p>
     <div class="credit">Made with ❤️ by <span>GH Jamali</span></div>
@@ -1292,7 +1550,7 @@
     resultEl.classList.remove('show');
     galleryEl.classList.remove('show');
     preview.style.display = 'none';
-    setStatus('Fetching your video…', 'loading');
+    setStatus('Fetching HD video…', 'loading');
 
     try{
       const apiUrl = `/api/download?url=${encodeURIComponent(link)}`;
@@ -1363,7 +1621,16 @@
       }
 
       resultEl.classList.add('show');
-      clearStatus();
+      setStatus('✅ Your video is ready', 'success');
+
+      // Bring the result into view immediately so the user isn't left
+      // wondering whether anything happened — this was the #1 reported
+      // confusion point before this fix.
+      requestAnimationFrame(() => {
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      setTimeout(clearStatus, 2500);
     }catch(err){
       console.error(err);
       setStatus('Could not fetch that video. Double-check the link and try again.', 'error');

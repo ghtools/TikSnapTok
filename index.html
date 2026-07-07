@@ -332,6 +332,32 @@
     transform:translateY(-1px);
   }
 
+  .install-btn{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    border:none;
+    color:#07070a;
+    background:linear-gradient(100deg, var(--cyan), var(--blue), var(--pink));
+    padding:9px 16px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    font-family:inherit;
+    cursor:pointer;
+    box-shadow:0 4px 18px rgba(0,229,255,0.25);
+    transition:transform .15s ease, box-shadow .2s ease;
+  }
+  .install-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 22px rgba(0,229,255,0.4);
+  }
+  @media (max-width:420px){
+    .install-btn span.install-label-full{ display:none; }
+  }
+
+
   .hamburger{
     width:38px;
     height:38px;
@@ -1118,6 +1144,7 @@
       <span class="brand-tik">Tik</span><span class="brand-snap">Snap</span><span class="brand-tok">Tok</span>
     </a>
     <div class="nav-right">
+      <button class="install-btn" id="installBtn" aria-label="Install TikSnapTok app" style="display:none;">⬇ <span class="install-label-full">Install App</span></button>
       <button class="bookmark-btn" id="bookmarkBtn" aria-label="Bookmark this page">★ Bookmark</button>
       <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       <div class="nav-menu" id="navMenu">
@@ -1676,6 +1703,54 @@
   document.getElementById('bookmarkBtn').addEventListener('click', () => {
     setStatus('Tip: use your browser\'s bookmark option (Ctrl+D) to save this page.', 'loading');
   });
+
+  // --- Install App (PWA) ---
+  // Chrome/Android fires 'beforeinstallprompt' when the site qualifies for
+  // installation (manifest.json + HTTPS + service worker are typically
+  // required by the browser before this fires).
+  const installBtn = document.getElementById('installBtn');
+  let deferredInstallPrompt = null;
+
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+
+  if (isIOS && !isStandalone) {
+    // iOS Safari has no install prompt API; show manual instructions instead.
+    installBtn.style.display = 'flex';
+    installBtn.querySelector('.install-label-full').textContent = 'Add to Home Screen';
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    installBtn.style.display = 'flex';
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (isIOS) {
+      setStatus('On iPhone: tap the Share icon in Safari, then "Add to Home Screen".', 'loading');
+      return;
+    }
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      installBtn.style.display = 'none';
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+  });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {
+        // Non-fatal: install prompt may just not appear if this fails.
+      });
+    });
+  }
 
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const navMenu = document.getElementById('navMenu');

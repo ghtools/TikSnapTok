@@ -1,30 +1,58 @@
-export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+// Edge Runtime streams the response directly instead of buffering the
+// entire video into memory first. This fixes two real problems reported
+// by testers:
+//   1. On slow connections, the old serverless function buffered the
+//      whole file server-side before sending anything back, so users saw
+//      a long stall and sometimes a silent failure once the file exceeded
+//      the platform's response-size/time limits.
+//   2. Larger HD videos could exceed the default serverless payload limit
+//      entirely, causing the download to fail with no useful error.
+// Streaming avoids both: bytes start reaching the browser as soon as they
+// arrive from the source, and there's no in-memory buffering ceiling.
 
-  const { url, filename } = req.query;
+export const config = {
+  runtime: 'edge',
+};
+
+export default async function handler(req) {
+  const { searchParams } = new URL(req.url);
+  const url = searchParams.get('url');
+  const filename = searchParams.get('filename') || 'tiksnaptok-download';
 
   if (!url) {
-    return res.status(400).json({ error: 'Missing "url" query parameter' });
+    return new Response(JSON.stringify({ error: 'Missing "url" query parameter' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   try {
     const upstream = await fetch(url);
 
-    if (!upstream.ok) {
-      return res.status(upstream.status).json({ error: `Upstream returned ${upstream.status}` });
+    if (!upstream.ok || !upstream.body) {
+      return new Response(JSON.stringify({ error: `Upstream returned ${upstream.status}` }), {
+        status: upstream.status || 502,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const contentType = upstream.headers.get('content-type') || 'application/octet-stream';
-    const safeName = (filename || 'tiksnaptok-download').replace(/[^a-zA-Z0-9._-]/g, '_');
+    const contentLength = upstream.headers.get('content-length');
+    const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_');
 
-    res.setHeader('Content-Type', contentType);
-    res.setHeader('Content-Disposition', `attachment; filename="${safeName}"`);
+    const headers = {
+      'Content-Type': contentType,
+      'Content-Disposition': `attachment; filename="${safeName}"`,
+      'Cache-Control': 'no-store',
+    };
+    if (contentLength) headers['Content-Length'] = contentLength;
 
-    const arrayBuffer = await upstream.arrayBuffer();
-    return res.status(200).send(Buffer.from(arrayBuffer));
+    // Pass the upstream body straight through — this is the streaming part.
+    return new Response(upstream.body, { status: 200, headers });
   } catch (err) {
-    return res.status(500).json({ error: 'Failed to proxy media file' });
+    return new Response(JSON.stringify({ error: 'Failed to proxy media file' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
-}
+      }

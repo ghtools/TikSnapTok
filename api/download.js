@@ -43,7 +43,11 @@ export default async function handler(req) {
   const timeout = setTimeout(() => controller.abort(), 20000);
 
   try {
-    const apiUrl = `https://${RAPIDAPI_HOST}/?url=${encodeURIComponent(url)}&hd=1`;
+    // Note: we intentionally don't send &hd=1 here. Testing showed no
+    // measurable speed difference, and the API already returns hdplay/play
+    // fields by default — our own code picks the best available quality
+    // from whichever fields come back, so this parameter wasn't needed.
+    const apiUrl = `https://${RAPIDAPI_HOST}/?url=${encodeURIComponent(url)}`;
 
     const apiRes = await fetch(apiUrl, {
       method: 'GET',
